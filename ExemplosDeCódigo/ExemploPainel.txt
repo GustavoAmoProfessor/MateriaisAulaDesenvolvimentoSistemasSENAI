@@ -1,0 +1,18 @@
+ painel = new PainelComFundo("C:\\Users\\Gustavo\\Pictures\\275282845_5262165883872116_3758076201573538580_n.jpg");
+        add(painel, BorderLayout.CENTER);
+
+// 🔥 CLASSE DO FUNDO
+class PainelComFundo extends JPanel {
+    private Image imagem;
+
+    public PainelComFundo(String caminho) {
+        imagem = new ImageIcon(caminho).getImage();
+        setLayout(null);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(imagem, 0, 0, getWidth(), getHeight(), this);
+    }
+}
