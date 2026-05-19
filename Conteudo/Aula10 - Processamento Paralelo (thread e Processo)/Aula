@@ -1,1 +1,64 @@
 
+import javax.swing.*;
+import java.awt.*;
+
+public class DownloadComThread extends JFrame {
+
+    private JProgressBar barra;
+    private JButton botao;
+    private JLabel status;
+
+    public DownloadComThread() {
+        setTitle("Simulador de Download com Thread");
+        setSize(400, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new FlowLayout());
+
+        status = new JLabel("Aguardando início...");
+        barra = new JProgressBar(0, 100);
+        barra.setStringPainted(true);
+
+        botao = new JButton("Iniciar Download");
+
+        add(status);
+        add(barra);
+        add(botao);
+
+        botao.addActionListener(e -> iniciarDownload());
+    }
+
+    private void iniciarDownload() {
+        botao.setEnabled(false);
+
+        Thread threadDownload = new Thread(() -> {
+            for (int i = 0; i <= 100; i++) {
+                int progresso = i;
+
+                SwingUtilities.invokeLater(() -> {
+                    barra.setValue(progresso);
+                    status.setText("Baixando... " + progresso + "%");
+                });
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            SwingUtilities.invokeLater(() -> {
+                status.setText("Download concluído com sucesso!");
+                botao.setEnabled(true);
+            });
+        });
+
+        threadDownload.start();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new DownloadComThread().setVisible(true);
+        });
+    }
+}
